@@ -1,5 +1,21 @@
 import Deck from "./deck.js"
 
+const CARD_VALUE_MAP = {
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  '7': 7,
+  '8': 8,
+  '9': 9,
+  '10': 10,
+  'J': 11,
+  'Q': 12,
+  'K': 13,
+  'A': 14,
+}
+
 const computerCardSlot = document.querySelector('.computer-card-slot');
 const playerCardSlot = document.querySelector('.player-card-slot');
 const computerDeckElem = document.querySelector('.computer-deck')
@@ -49,9 +65,27 @@ function flipCards() {
   computerCardSlot.appendChild(computerCard.getHTML())
 
   updateDeckCount()
+
+  if (isRoundWinner(playerCard, computerCard)) {
+    text.innerText = 'Win'
+    playerDeck.push(playerCard)
+    playerDeck.push(computerCard)
+  } else if (isRoundWinner(computerCard, playerCard)) {
+    text.innerText = 'Lose'
+    computerDeck.push(computerCard)
+    computerDeck.push(playerCard)
+  } else {
+    text.innerText = 'Draw'
+    computerDeck.push(computerCard)
+    playerDeck.push(playerCard)
+  }
 }
 
 function updateDeckCount() {
   computerDeckElem.innerText = computerDeck.numberOfCards
   playerDeckElem.innerText = playerDeck.numberOfCards
+}
+
+function isRoundWinner(cardOne, cardTwo) {
+  return CARD_VALUE_MAP[cardOne.value] > CARD_VALUE_MAP[cardTwo.value]
 }
